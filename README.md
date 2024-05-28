@@ -2,7 +2,7 @@
 
 A git repo that provides working examples of various Hyperledger Fabric network topologies that leverage a variety of features provided by the product, for production-ready deployments.
 
-Each folder in the topologies directory represents a different type of network that can be created. All of the available topologies are based on T1 which contains three orgs: org1 contains 3 orderers, org2 and org3 both contain 2 peers each. Each org has it's own 2 CAs: am Identities CA (for network components identities) and a TLS CA (for secure SSL communications between network components). 
+Each folder in the topologies directory represents a different type of network that can be created. All of the available topologies are based on T1 which contains three orgs: org1 contains 3 orderers, org2 and org3 both contain 2 peers each. Each org has its own 2 CAs: an Identities CA (for network components identities) and a TLS CA (for secure SSL communications between network components). 
 
 ## Individual Topology Documentation
 | Topology                        | Description                                      |
@@ -24,7 +24,7 @@ Each folder in the topologies directory represents a different type of network t
 ## ***A. Prerequisites***
 
 - Docker & Docker Compose Plugin (v2) need to be installed locally
-  - docker needs be able to be executed as a non-root (logged-in user); i.e. no need to use *sudo* to run docker commands
+  - docker needs to be able to be executed as a non-root (logged-in user); i.e. no need to use *sudo* to run docker commands
   - The Docker Compose Plugin allows for *docker compose (instead of docker-compose) commands* to be executed. This  is leveraged extensively in setup scripts
 - Linux or Mac environment (all setup/destroy scripts are bash scripts)
 
@@ -39,7 +39,7 @@ Each folder in the topologies directory represents a different type of network t
 1. To create a network topology
 ./setup-network.sh  # from the topology folder
 ```
-4. How do you know the network has started succesfully?
+4. How do you know the network has started successfully?
 ```sh
 ******* NETWORK SETUP COMPLETED *******  # this should be the last message displayed once the setup-network.sh script has completed
 ```
@@ -82,11 +82,11 @@ Each folder in the topologies directory represents a different type of network t
 
 **2. Ports exposed to the host**
 
-   With one exception (for topology T8) none of the ports used by processes runing inside the topology containers are exposed to the host, to avoid any conflicts with other processes using these port numbers. 
+   With one exception (for topology T8) none of the ports used by processes running inside the topology containers are exposed to the host, to avoid any conflicts with other processes using these port numbers. 
 
    The docker-compose.yml file at the root of each topology folder can be referenced though for these purposes:
     - to get an idea about all containers running for the topology and the Docker images used by them
-    - the port numbers used by processes inside the containers are also documented as comments. To expose access to these processes from the host, these port commands can be commented out and configured with desired ports that onE might want to use. This then allows for e.g. for peers and orders to be accessed by external applications or other components (e.g. OpemnLDAP, CoudchDB, MySQL, etc) to be accessed and have their data inspected from the host.
+    - the port numbers used by processes inside the containers are also documented as comments. To expose access to these processes from the host, these port commands can be commented out and configured with desired ports that one might want to use. This then allows for e.g. for peers and orders to be accessed by external applications or other components (e.g. OpenLDAP, CoudchDB, MySQL, etc) to be accessed and have their data inspected from the host.
 
 **3. Other configurations**
 
@@ -104,20 +104,20 @@ With the exception of the t0 topology all other topologies use as a base (were b
 
 ## **A. Production Readiness**
 
-In order to deploy a Hyperledger Fabric to production in an enterprise setting with mutliple participant organizations (sometime not connected to the same point-to-point networks, i.e. connected over the public internet) a few considertions need to be kept in mind:
+In order to deploy a Hyperledger Fabric to production in an enterprise setting with multiple participant organizations (sometimes not connected to the same point-to-point networks, i.e. connected over the public internet) a few considerations need to be kept in mind:
    - Ability to provide secure and authenticated communications between all nodes: all communications between network nodes should be encrypted and authenticated with mutual TLS
-   - identities associated with nodes and actors that connect to the network should have their credentials stored in a secure store, using solutions frequeantly deployed in enterprises: e.g. Fabric CA should be intergrated with an LDAP compliant store instead of using its own SQL database to store account credentials
+   - identities associated with nodes and actors that connect to the network should have their credentials stored in a secure store, using solutions frequently deployed in enterprises: e.g. Fabric CA should be integrated with an LDAP compliant store instead of using its own SQL database to store account credentials
    - There should be no single point of failure: this means that not only that there must be multiple instances of peers and orders but other components too: Fabric CA, World State Storage Databases, External Chaincode servers need to be replicated as well. Also wherever possible access should be done through a proxy which can load balance and provide fail over for access to each set of components. Nginx proxies have been used in some of the topologies for this purpose.
 
 ## ***B. Lack of sufficient online examples and tutorials***
 
 - The official Hyperledger Fabric documentation of architecture, features and concepts is detailed and for the most part very comprehensive. Given the complexities of a blockchain network and the number of technologies involved, this is simply not enough though.
   
-- There are some operations guides that show some examples how to setup certain components of the network but we often found that there were mistakes in some of the commands or steps described in them. For a new person starting to use Hyperledger it is very easy to get lost as soon as one hits the first few setup/execution errors: there are many moving parts and a network administrator needs to be familiar with many technologies.
+- There are some operations guides that show some examples of how to setup certain components of the network but we often found that there were mistakes in some of the commands or steps described in them. For a new person starting to use Hyperledger it is very easy to get lost as soon as one hits the first few setup/execution errors: there are many moving parts and a network administrator needs to be familiar with many technologies.
 
-- The scripts available in the official product code base in Github are useful in getting an initial network up an running but they really don't go into any sufficient depth to demonstrate setup examples for capabilities needed for a production deployment, such as those described above.
+- The scripts available in the official product code base in Github are useful in getting an initial network up and running but they really don't go into any sufficient depth to demonstrate setup examples for capabilities needed for a production deployment, such as those described above.
 
-- There are a few online resources that demonstrate certain more complex aspects of Hyperledger Fabric but they frequently suffer from the same short comings present in the official documentation and the examples in the HL code base.
+- There are a few online resources that demonstrate certain more complex aspects of Hyperledger Fabric but they frequently suffer from the same shortcomings present in the official documentation and the examples in the HL code base.
 
 - In general there is a significant lack of working examples of network topologies that leverage many of the sophisticated capabilities of Hyperledger Fabric.
 
